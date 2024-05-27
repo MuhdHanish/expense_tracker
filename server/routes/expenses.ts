@@ -10,6 +10,7 @@ const fakeExpense: TExpense[] = [
 ];
 
 export const expensesRoute = new Hono()
+    // get index
     .get("/", (c) => {
         try {
             return c.json({ success: true, data: fakeExpense });
@@ -21,6 +22,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
+    // get total spent
     .get("/total-spent", (c) => {
         try {
             const total = fakeExpense.reduce((acc, expense) => acc + expense.amount, 0);
@@ -33,6 +35,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
+    // post expense
     .post("/", createExpenseValidator, (c) => {
         try {
             const data = c.req.valid("json");
@@ -46,6 +49,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
+    // get expense by id
     .get("/:id{[0-9]+}", (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
@@ -60,6 +64,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
+    // delete expense by id
     .delete("/:id{[0-9]+}", (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
