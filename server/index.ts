@@ -5,6 +5,6 @@ const hostname = process.env.HOST || '127.0.0.1';
 Bun.serve({
     port,
     hostname,
-    fetch: app.fetch
+    fetch: app.fetch,
 });
 console.log(`server running on http://${hostname}:${port}`);
