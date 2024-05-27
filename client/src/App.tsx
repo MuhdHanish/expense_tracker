@@ -6,16 +6,16 @@ function App() {
 
   return (
     <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+      <div className="flex flex-col text-center gap-3 bg-background">
+        <button className="text-foreground" onClick={() => setCount((count) => count + 1)}>
           up
-        </button>
-        <button onClick={() => setCount((count) => count - 1)}>
-          down
         </button>
         <p>
           {count}
         </p>
+        <button className="bg-red-100" onClick={() => setCount((count) => count - 1)}>
+          down
+        </button>
       </div>
     </>
   );
