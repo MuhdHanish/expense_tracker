@@ -4,9 +4,9 @@ import { createExpenseValidator } from "../validation";
 
 // fake data
 const fakeExpense: TExpense[] = [
-    { id: 1, title: "Groceries", amount: 150.75 },
-    { id: 2, title: "Rent", amount: 1200.00 },
-    { id: 3, title: "Utilities", amount: 200.50 },
+    { id: 1, title: "Groceries", amount: 150 },
+    { id: 2, title: "Rent", amount: 1200 },
+    { id: 3, title: "Utilities", amount: 200 },
 ];
 
 export const expensesRoute = new Hono()
