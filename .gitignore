@@ -188,9 +188,6 @@ psd
 thumb
 sketch
 
-## Fake Data
-data.ts
-
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
