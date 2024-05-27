@@ -3,8 +3,9 @@
   "module": "server/index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun server/index.ts",
-    "dev": "bun --watch server/index.ts"
+    "start": "bun server/dist/index.js",
+    "dev": "bun --watch server/src/index.ts",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bun": "latest"
