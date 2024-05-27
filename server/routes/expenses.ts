@@ -21,7 +21,19 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
-    .post("/", createExpenseValidator, async (c) => {
+    .get("/total-spent", (c) => {
+        try {
+            const total = fakeExpense.reduce((acc, expense) => acc + expense.amount, 0);
+            return c.json({ success: true, data: total });
+        } catch (error) {
+            return c.json({
+                success: false,
+                message: "Internal Server Error!",
+                error: error instanceof Error ? error.message : "Unexpected Error."
+            }, 500);
+        }
+    })
+    .post("/", createExpenseValidator, (c) => {
         try {
             const data = c.req.valid("json");
             fakeExpense.push({ id: fakeExpense.length + 1, ...data });
