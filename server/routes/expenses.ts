@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import type { TExpense } from "../types";
 import { createExpenseValidator } from "../validation";
 
-// fake data
+// Fake data
 const fakeExpense: TExpense[] = [
     { id: 1, title: "Groceries", amount: 150 },
     { id: 2, title: "Rent", amount: 1200 },
@@ -10,7 +10,7 @@ const fakeExpense: TExpense[] = [
 ];
 
 export const expensesRoute = new Hono()
-    // get index
+    // Get index
     .get("/", (c) => {
         try {
             return c.json({ success: true, data: fakeExpense });
@@ -22,7 +22,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
-    // get total spent
+    // Get total spent
     .get("/total-spent", (c) => {
         try {
             const total = fakeExpense.reduce((acc, expense) => acc + expense.amount, 0);
@@ -35,7 +35,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
-    // post expense
+    // Post expense
     .post("/", createExpenseValidator, (c) => {
         try {
             const data = c.req.valid("json");
@@ -49,7 +49,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
-    // get expense by id
+    // Get expense by id
     .get("/:id{[0-9]+}", (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
@@ -64,7 +64,7 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
-    // delete expense by id
+    // Delete expense by id
     .delete("/:id{[0-9]+}", (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
