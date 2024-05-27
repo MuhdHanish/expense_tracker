@@ -6,13 +6,15 @@ function App() {
 
   return (
     <>
-      <h1 className="text-emerald-500">Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          up
+        </button>
+        <button onClick={() => setCount((count) => count - 1)}>
+          down
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          {count}
         </p>
       </div>
     </>
