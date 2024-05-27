@@ -8,7 +8,7 @@ const app = new Hono();
 
 app.use(logger());
 
-app.get("/", (c) => c.json({ message: "Hello from Server!" }));
+app.get("/", (c) => c.json({ success: true, message: "Hello from Server!" }));
 
 app.route("/api/expenses", expensesRoute);
 
