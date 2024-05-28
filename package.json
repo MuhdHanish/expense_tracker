@@ -3,12 +3,8 @@
   "module": "server/index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun ./server/dist/index.js",
-    "dev": "bun --watch ./server/src/index.ts",
-    "build:client": "cd client && bun run build",
-    "build:server": "tsc",
-    "build": "bun run build:client && bun run build:server",
-    "deploy": "npm bun build && git add . && git commit -m 'new build' && git push origin main"
+    "start": "bun server/index.js",
+    "dev": "bun --watch server/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
