@@ -4,6 +4,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@server/*":[
+        "../server/*"
       ]
     },
     "target": "ES2020",
