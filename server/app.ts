@@ -22,4 +22,4 @@ app.get("*", serveStatic({ path: './client/dist/index.html' }));
 export default app;
 
 // Export the type of Base API Route 
-export type AppType = typeof apiRoute;
+export type ApiRoutes = typeof apiRoute;
