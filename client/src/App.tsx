@@ -7,7 +7,8 @@ function App() {
     async function fetchTotal() {
       const response = await fetch("/api/expenses/total-spent");
       const { data } = await response.json();
-      setTotalSpent(data);
+      const { total } = data;
+      setTotalSpent(total);
     }
     fetchTotal();
   }, []);
