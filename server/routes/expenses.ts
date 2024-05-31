@@ -13,7 +13,7 @@ export const expensesRoute = new Hono()
     // Get index
     .get("/", (c) => {
         try {
-            return c.json({ success: true, data: fakeExpense });
+            return c.json({ success: true, data: { expenses: fakeExpense } });
         } catch (error) {
             return c.json({
                 success: false,
@@ -26,7 +26,7 @@ export const expensesRoute = new Hono()
     .get("/total-spent", (c) => {
         try {
             const total = fakeExpense.reduce((acc, expense) => acc + expense.amount, 0);
-            return c.json({ success: true, data: total });
+            return c.json({ success: true, data: { total } });
         } catch (error) {
             return c.json({
                 success: false,
@@ -38,9 +38,9 @@ export const expensesRoute = new Hono()
     // Post expense
     .post("/", createExpenseValidator, (c) => {
         try {
-            const data = c.req.valid("json");
-            fakeExpense.push({ id: fakeExpense.length + 1, ...data });
-            return c.json({ success: true, data }, 201);
+            const expense = c.req.valid("json");
+            fakeExpense.push({ id: fakeExpense.length + 1, ...expense });
+            return c.json({ success: true, data: { expense } }, 201);
         } catch (error) {
             return c.json({
                 success: false,
@@ -53,9 +53,9 @@ export const expensesRoute = new Hono()
     .get("/:id{[0-9]+}", (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
-            const data = fakeExpense.find(expense => expense.id === id);
-            if (!data) return c.json({ success: false, message: `Resource not found with id ${id}` }, 404);
-            return c.json({ success: true, data });
+            const expense = fakeExpense.find(expense => expense.id === id);
+            if (!expense) return c.json({ success: false, message: `Resource not found with id ${id}` }, 404);
+            return c.json({ success: true, data: { expense } });
         } catch (error) {
             return c.json({
                 success: false,
@@ -70,8 +70,8 @@ export const expensesRoute = new Hono()
             const id = Number.parseInt(c.req.param("id"));
             const index = fakeExpense.findIndex(expense => expense.id === id);
             if (index === -1) return c.json({ success: false, message: `Resource not found with id ${id}` }, 404);
-            const data = fakeExpense.splice(index, 1)[0];
-            return c.json({ success: true, data });
+            const expense = fakeExpense.splice(index, 1)[0];
+            return c.json({ success: true, data: { expense } });
         } catch (error) {
             return c.json({
                 success: false,
