@@ -10,10 +10,9 @@ const app = new Hono();
 app.use("*", logger());
 
 // Base api route
-const apiRoute = app.basePath('/api');
-
-// Sub routes
-apiRoute.route("/expenses", expensesRoute);
+const apiRoute = app.basePath('/api')
+    // Sub routes
+    .route("/expenses", expensesRoute);
 
 // Serve static files (frontend) for unmatched routes
 app.get("*", serveStatic({ root: './client/dist' }));
