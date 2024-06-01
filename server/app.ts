@@ -3,7 +3,7 @@ import { logger } from "hono/logger";
 import { serveStatic } from "hono/bun";
 
 // Routes
-import { expensesRoute } from "./routes";
+import { authRoute, expensesRoute } from "./routes";
 
 const app = new Hono();
 
@@ -12,6 +12,9 @@ app.use("*", logger());
 // Base api route
 const apiRoute = app.basePath('/api')
     // Sub routes
+    // Auth
+    .route("/auth", authRoute)
+    // Expenses
     .route("/expenses", expensesRoute);
 
 // Serve static files (frontend) for unmatched routes
