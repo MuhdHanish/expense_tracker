@@ -3,8 +3,8 @@ import { authMiddleware } from "../middlewares";
 import { kindeClient, sessionManager } from "../kinde";
 
 export const authRoute = new Hono()
-    // Get me, to check authentication status & pass the user
-    .get("/me", authMiddleware, async (c) => {
+    // Get profile, to check authentication status & pass the user
+    .get("/profile", authMiddleware, async (c) => {
         try {
             const { isAuthenticated, user } = c.var;
             return c.json({ success: true, data: { isAuthenticated, user } }, 200);
