@@ -13,7 +13,7 @@ app.use("*", logger());
 const apiRoute = app.basePath('/api')
     // Sub routes
     // Auth
-    .route("/auth", authRoute)
+    .route("/", authRoute)
     // Expenses
     .route("/expenses", expensesRoute);
 
