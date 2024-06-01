@@ -10,7 +10,7 @@ async function getTotalSpent() {
 }
 
 function App() {
-  const { data, error, isPending } = useQuery({ queryKey: ["total-spent"], queryFn: getTotalSpent });
+  const { data, error, isPending } = useQuery({ queryKey: ["get-total-spent"], queryFn: getTotalSpent });
   if (error) return "An error has occured: " + error.message;
 
   return (
