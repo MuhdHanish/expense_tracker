@@ -27,7 +27,7 @@ async function getAllExpenses() {
 
 function Expenses() {
     const { data, error, isPending } = useQuery({ queryKey: ["get-all-expenses"], queryFn: getAllExpenses });
-    if (error) return "An error has occured: " + error.message;
+    if (error) return error.message;
     
     return (
         <div className="p-2 max-w-3xl m-auto">

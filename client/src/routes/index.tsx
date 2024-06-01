@@ -16,7 +16,7 @@ async function getTotalSpent() {
 
 function Index() {
     const { data, error, isPending } = useQuery({ queryKey: ["get-total-spent"], queryFn: getTotalSpent });
-    if (error) return "An error has occured: " + error.message;
+    if (error) return error.message;
 
     return (
         <Card className="w-[350px] m-auto">
