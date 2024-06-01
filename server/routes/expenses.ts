@@ -10,7 +10,7 @@ const fakeExpense: TExpense[] = [
 ];
 
 export const expensesRoute = new Hono()
-    // Get index
+    // Get expenses
     .get("/", (c) => {
         try {
             return c.json({ success: true, data: { expenses: fakeExpense } });
