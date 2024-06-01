@@ -18,7 +18,7 @@ function CreateExpense() {
         },
         onSubmit: async ({ value }) => {
             const response = await api.expenses.$post({ json: value });
-            if (response.ok) throw new Error("The server may be experiencing issues, Please try again later.");
+            if (!response.ok) throw new Error("The server may be experiencing issues, Please try again later.");
             naviagte({ to: "/expenses" });
         },
     })
