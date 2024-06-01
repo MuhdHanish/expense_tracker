@@ -1,16 +1,13 @@
 import { Hono } from "hono";
+import { authMiddleware } from "../middlewares";
 import { kindeClient, sessionManager } from "../kinde";
 
 export const authRoute = new Hono()
     // Get me, to check authentication status & pass the user
-    .get("/me", async (c) => {
+    .get("/me", authMiddleware, async (c) => {
         try {
-            const isAuthenticated = await kindeClient.isAuthenticated(sessionManager(c));
-            if (!isAuthenticated) return c.json({ success: false, message: "Not Authenticated", data: { isAuthenticated } }, 401);
-            else {
-                const user = await kindeClient.getUserProfile(sessionManager(c));
-                return c.json({ success: true, data: { isAuthenticated, user } }, 200);
-            }
+            const { isAuthenticated, user } = c.var;
+            return c.json({ success: true, data: { isAuthenticated, user } }, 200);
         } catch (error) {
             return c.json({
                 success: false,
