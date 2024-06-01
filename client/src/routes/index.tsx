@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

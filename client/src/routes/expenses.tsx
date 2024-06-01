@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createFileRoute } from "@tanstack/react-router";
