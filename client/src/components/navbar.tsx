@@ -15,6 +15,9 @@ export function NavBar() {
             <Link to="/create-expense" className="[&.active]:font-bold">
                 Create
             </Link>
+            <Link to="/profile" className="[&.active]:font-bold">
+                Profile
+            </Link>
         </div>
     );
 };
