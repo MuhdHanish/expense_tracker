@@ -31,7 +31,7 @@ function Profile() {
                 </Avatar>
                 <p>{given_name} {family_name}</p>
             </div>
-            <Button className="mt-5" variant="destructive">
+            <Button className="my-5" asChild variant="destructive">
                 <a href="/api/auth/logout">Logout</a>
             </Button>
         </div>
