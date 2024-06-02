@@ -3,6 +3,7 @@
   "module": "server/index.ts",
   "type": "module",
   "scripts": {
+    "db-studio": "bunx drizzle-kit studio",
     "migrate": "bun drizzle-kit generate && bun migrate.ts",
     "start": "bun server/index.js",
     "dev": "bun --watch server/index.ts"
