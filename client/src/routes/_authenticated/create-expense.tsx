@@ -5,6 +5,12 @@ import { useForm } from "@tanstack/react-form";
 import { Button } from "@/components/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
+// Zod create expense validation schema imported from the server
+import { createExpenseSchema } from "@server/validation";
+
+// Zod validator from tanstack-form
+import { zodValidator } from "@tanstack/zod-form-adapter";
+
 export const Route = createFileRoute('/_authenticated/create-expense')({
     component: CreateExpense
 });
@@ -12,6 +18,7 @@ export const Route = createFileRoute('/_authenticated/create-expense')({
 function CreateExpense() {
     const naviagte = useNavigate();
     const form = useForm({
+        validatorAdapter: zodValidator,
         defaultValues: {
             title: '',
             amount: "",
@@ -36,6 +43,10 @@ function CreateExpense() {
             >
                 <form.Field
                     name="title"
+                    validatorAdapter={zodValidator}
+                    validators={{
+                        onChange: createExpenseSchema.shape.title,
+                    }}
                     children={(field) => {
                         return (
                             <>
@@ -56,6 +67,10 @@ function CreateExpense() {
                 />
                 <form.Field
                     name="amount"
+                    validatorAdapter={zodValidator}
+                    validators={{
+                        onChange: createExpenseSchema.shape.amount,
+                    }}
                     children={(field) => {
                         return (
                             <>
@@ -63,6 +78,7 @@ function CreateExpense() {
                                 <Input
                                     id={field.name}
                                     type="number"
+                                    min={0}
                                     name={field.name}
                                     value={field.state.value}
                                     onBlur={field.handleBlur}
