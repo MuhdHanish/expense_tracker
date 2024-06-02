@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import type { TExpense } from "../types";
+import { authMiddleware } from "../middlewares";
 import { createExpenseValidator } from "../validation";
 
 // Fake data
@@ -11,7 +12,7 @@ const fakeExpense: TExpense[] = [
 
 export const expensesRoute = new Hono()
     // Get expenses
-    .get("/", (c) => {
+    .get("/", authMiddleware, (c) => {
         try {
             return c.json({ success: true, data: { expenses: fakeExpense } });
         } catch (error) {
@@ -23,7 +24,7 @@ export const expensesRoute = new Hono()
         }
     })
     // Get total spent
-    .get("/total-spent", (c) => {
+    .get("/total-spent", authMiddleware, (c) => {
         try {
             const total = fakeExpense.reduce((acc, expense) => acc + expense.amount, 0);
             return c.json({ success: true, data: { total } });
@@ -36,7 +37,7 @@ export const expensesRoute = new Hono()
         }
     })
     // Post expense
-    .post("/", createExpenseValidator, (c) => {
+    .post("/", authMiddleware, createExpenseValidator, (c) => {
         try {
             const expense = c.req.valid("json");
             fakeExpense.push({ id: fakeExpense.length + 1, ...expense });
@@ -50,7 +51,7 @@ export const expensesRoute = new Hono()
         }
     })
     // Get expense by id
-    .get("/:id{[0-9]+}", (c) => {
+    .get("/:id{[0-9]+}", authMiddleware, (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
             const expense = fakeExpense.find(expense => expense.id === id);
@@ -65,7 +66,7 @@ export const expensesRoute = new Hono()
         }
     })
     // Delete expense by id
-    .delete("/:id{[0-9]+}", (c) => {
+    .delete("/:id{[0-9]+}", authMiddleware, (c) => {
         try {
             const id = Number.parseInt(c.req.param("id"));
             const index = fakeExpense.findIndex(expense => expense.id === id);
