@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { getProfileQueryOptions } from '@/lib';
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
@@ -25,9 +26,16 @@ function Component() {
 
 function Login() {
     return (
-        <div>
-            <p>You have to login</p>
-            <a href="/api/auth/login">Login!</a>
+        <div className='flex flex-col gap-y-5'>
+            <p>You have to login or register !</p>
+            <div className="flex gap-x-3 items-center">
+                <Button asChild>
+                    <a href="/api/auth/login">Login</a>
+                </Button>
+                <Button asChild>
+                    <a href="/api/auth/register">Register</a>
+                </Button>
+            </div>
         </div>
     );
 };
