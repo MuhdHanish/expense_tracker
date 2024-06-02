@@ -1,4 +1,4 @@
-import { index, numeric, pgTable, serial, text } from 'drizzle-orm/pg-core';
+import { index, numeric, pgTable, serial, text } from "drizzle-orm/pg-core";
 
 export const expenses = pgTable("expenses", {
     id: serial("id").primaryKey(),
