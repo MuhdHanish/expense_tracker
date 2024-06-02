@@ -11,8 +11,8 @@ export const authRoute = new Hono()
         } catch (error) {
             return c.json({
                 success: false,
-                message: "Internal Server Error!",
-                error: error instanceof Error ? error.message : "Unexpected Error."
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
             }, 500);
         }
     })
@@ -24,8 +24,8 @@ export const authRoute = new Hono()
         } catch (error) {
             return c.json({
                 success: false,
-                message: "Internal Server Error!",
-                error: error instanceof Error ? error.message : "Unexpected Error."
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
             }, 500);
         }
     })
@@ -37,8 +37,8 @@ export const authRoute = new Hono()
         } catch (error) {
             return c.json({
                 success: false,
-                message: "Internal Server Error!",
-                error: error instanceof Error ? error.message : "Unexpected Error."
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
             }, 500);
         }
     })
@@ -52,8 +52,8 @@ export const authRoute = new Hono()
         } catch (error) {
             return c.json({
                 success: false,
-                message: "Internal Server Error!",
-                error: error instanceof Error ? error.message : "Unexpected Error."
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
             }, 500);
         }
     })
@@ -65,8 +65,8 @@ export const authRoute = new Hono()
         } catch (error) {
             return c.json({
                 success: false,
-                message: "Internal Server Error!",
-                error: error instanceof Error ? error.message : "Unexpected Error."
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
             }, 500);
         }
     });
