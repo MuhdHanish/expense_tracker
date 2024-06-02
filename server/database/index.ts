@@ -8,4 +8,4 @@ import postgres from 'postgres';
 
 // for query purposes
 const queryClient = postgres(process.env.DATABASE_URL!);
-export const db = drizzle(queryClient);
+export const database = drizzle(queryClient);
