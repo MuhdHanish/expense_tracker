@@ -1,7 +1,8 @@
 import { NavBar } from "@/components/navbar";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { TRouterContext } from "../../types/index";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<TRouterContext>()({
     component: Root,
 });
 
