@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { authMiddleware } from "../middlewares";
 import { kindeClient, sessionManager } from "../kinde";
+import { catchHandler } from "../utils";
 
 export const authRoute = new Hono()
     // Get profile, to check authentication status & pass the user
@@ -9,11 +10,7 @@ export const authRoute = new Hono()
             const { isAuthenticated, user } = c.var;
             return c.json({ success: true, data: { isAuthenticated, user } }, 200);
         } catch (error) {
-            return c.json({
-                success: false,
-                message: "Internal Server Error",
-                error: error instanceof Error ? error.message : "Unexpected Error"
-            }, 500);
+            catchHandler(c, error);
         }
     })
     // Get login
@@ -22,11 +19,7 @@ export const authRoute = new Hono()
             const loginUrl = await kindeClient.login(sessionManager(c));
             return c.redirect(loginUrl.toString());
         } catch (error) {
-            return c.json({
-                success: false,
-                message: "Internal Server Error",
-                error: error instanceof Error ? error.message : "Unexpected Error"
-            }, 500);
+            catchHandler(c, error);
         }
     })
     // Get register
@@ -35,11 +28,7 @@ export const authRoute = new Hono()
             const registerUrl = await kindeClient.register(sessionManager(c));
             return c.redirect(registerUrl.toString());
         } catch (error) {
-            return c.json({
-                success: false,
-                message: "Internal Server Error",
-                error: error instanceof Error ? error.message : "Unexpected Error"
-            }, 500);
+            catchHandler(c, error);
         }
     })
     // Get callback
@@ -50,11 +39,7 @@ export const authRoute = new Hono()
             await kindeClient.handleRedirectToApp(sessionManager(c), url);
             return c.redirect("/");
         } catch (error) {
-            return c.json({
-                success: false,
-                message: "Internal Server Error",
-                error: error instanceof Error ? error.message : "Unexpected Error"
-            }, 500);
+            catchHandler(c, error);
         }
     })
     // Get logout
@@ -63,10 +48,6 @@ export const authRoute = new Hono()
             const logoutUrl = await kindeClient.logout(sessionManager(c));
             return c.redirect(logoutUrl.toString());
         } catch (error) {
-            return c.json({
-                success: false,
-                message: "Internal Server Error",
-                error: error instanceof Error ? error.message : "Unexpected Error"
-            }, 500);
+            catchHandler(c, error);
         }
     });
