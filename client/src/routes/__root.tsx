@@ -11,7 +11,9 @@ function Root() {
         <>
             <NavBar />
             <hr />
-            <Outlet />
+            <div className="p-2 max-w-2xl m-auto">
+                <Outlet />
+            </div>
         </>
     );
 };
