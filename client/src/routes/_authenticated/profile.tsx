@@ -16,7 +16,7 @@ function Profile() {
 
     return (
         <div className="p-2">
-            <p>Hello {given_name} {family_name} !</p>
+            <p>Hello {given_name} {family_name}</p>
             <a href="/api/auth/logout">Logout!</a>
         </div>
     );
