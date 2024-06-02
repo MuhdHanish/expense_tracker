@@ -15,6 +15,13 @@
       "when": 1717312598448,
       "tag": "0001_tiresome_bill_hollister",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1717330371137,
+      "tag": "0002_flashy_hex",
+      "breakpoints": true
     }
   ]
 }
