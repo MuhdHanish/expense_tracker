@@ -1,6 +1,9 @@
 import { api } from "@/lib";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
+// Loader icon
+import { Loader2 } from "lucide-react";
+
 // UI components
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,9 +38,9 @@ function CreateExpense() {
     })
 
     return (
-        <div className="p-2">
-            <h2>Create Expense</h2>
-            <form className="max-w-xl m-auto flex flex-col gap-y-4"
+        <div className="p-2 max-w-xl m-auto flex flex-col gap-y-4">
+            <h2 className="font-bold">Create Expense</h2>
+            <form className="flex flex-col gap-y-3.5"
                 onSubmit={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
@@ -53,7 +56,7 @@ function CreateExpense() {
                     }}
                     children={(field) => {
                         return (
-                            <div>
+                            <div className="flex flex-col gap-y-2">
                                 <Label htmlFor={field.name}>Title</Label>
                                 <Input
                                     id={field.name}
@@ -63,7 +66,7 @@ function CreateExpense() {
                                     onChange={(e) => field.handleChange(e.target.value)}
                                 />
                                 {field.state.meta.touchedErrors ? (
-                                    <em>{field.state.meta.touchedErrors}</em>
+                                    <em className="text-xs text-destructive">{field.state.meta.touchedErrors}</em>
                                 ) : null}
                             </div>
                         )
@@ -77,7 +80,7 @@ function CreateExpense() {
                     }}
                     children={(field) => {
                         return (
-                            <div>
+                            <div className="flex flex-col gap-y-2">
                                 <Label htmlFor={field.name}>Amount</Label>
                                 <Input
                                     id={field.name}
@@ -89,7 +92,7 @@ function CreateExpense() {
                                     onChange={(e) => field.handleChange(e.target.value)}
                                 />
                                 {field.state.meta.touchedErrors ? (
-                                    <em>{field.state.meta.touchedErrors}</em>
+                                    <em className="text-xs text-destructive">{field.state.meta.touchedErrors}</em>
                                 ) : null}
                             </div>
                         )
@@ -121,7 +124,12 @@ function CreateExpense() {
                     selector={(state) => [state.canSubmit, state.isSubmitting]}
                     children={([canSubmit, isSubmitting]) => (
                         <Button className="mt-4" type="submit" disabled={!canSubmit}>
-                            {isSubmitting ? '...' : 'Submit'}
+                            {isSubmitting ?
+                                <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                                </>
+                                : 'Submit'}
                         </Button>
                     )}
                 />
