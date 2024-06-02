@@ -11,8 +11,8 @@ import { createExpenseValidator } from "../validation";
 import { database } from "../database";
 import { and, desc, eq, sum } from "drizzle-orm";
 
-// Importing schemas from the specified path with Table suffix
-import { expenses as expensesTable } from "../database/schema/expenses";
+// Importing schemas from the specified path with Table suffix  & Drizzle-Zod schema
+import { expenses as expensesTable, insertExpensesSchema } from "../database/schema/expenses";
 
 export const expensesRoute = new Hono()
     // Get expenses
@@ -35,9 +35,11 @@ export const expensesRoute = new Hono()
         try {
             const userId = getUserId(c);
             const expenseDTO = c.req.valid("json");
+            // Validate the data before inserting to database
+            const validatedExpenseDTO = insertExpensesSchema.parse({ ...expenseDTO, userId });
             const expense = await database
                 .insert(expensesTable)
-                .values({userId, ...expenseDTO,})
+                .values(validatedExpenseDTO)
                 .returning()
                 .then(result => result[0]);
             return c.json({ success: true, data: { expense } }, 201);
