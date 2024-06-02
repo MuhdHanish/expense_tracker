@@ -42,19 +42,6 @@ export const expensesRoute = new Hono()
             }, 500);
         }
     })
-    // Get total spent
-    .get("/total-spent", authMiddleware, (c) => {
-        try {
-            const total = fakeExpense.reduce((acc, expense) => acc + +expense.amount, 0);
-            return c.json({ success: true, data: { total } });
-        } catch (error) {
-            return c.json({
-                success: false,
-                message: "Internal Server Error!",
-                error: error instanceof Error ? error.message : "Unexpected Error."
-            }, 500);
-        }
-    })
     // Post expense
     .post("/", authMiddleware, createExpenseValidator, async (c) => {
         try {
@@ -100,6 +87,19 @@ export const expensesRoute = new Hono()
             if (index === -1) return c.json({ success: false, message: `Resource not found with id ${id}` }, 404);
             const expense = fakeExpense.splice(index, 1)[0];
             return c.json({ success: true, data: { expense } });
+        } catch (error) {
+            return c.json({
+                success: false,
+                message: "Internal Server Error!",
+                error: error instanceof Error ? error.message : "Unexpected Error."
+            }, 500);
+        }
+    })
+    // Get total spent
+    .get("/total-spent", authMiddleware, (c) => {
+        try {
+            const total = fakeExpense.reduce((acc, expense) => acc + +expense.amount, 0);
+            return c.json({ success: true, data: { total } });
         } catch (error) {
             return c.json({
                 success: false,
