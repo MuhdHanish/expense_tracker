@@ -5,7 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 export const expenseSchema = z.object({
     id: z.number().int().positive().min(1),
     title: z.string(),
-    amount: z.number().positive(),
+    amount: z.string(),
 });
 
 // Create expense schema
