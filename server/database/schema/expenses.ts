@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { index, numeric, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { date, index, numeric, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const expenses = pgTable("expenses", {
     id: serial("id").primaryKey(),
     userId: text("user_id").notNull(),
     title: text("title").notNull(),
-    amount: numeric("amount", { precision: 12, scale: 2 }),
+    amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
+    date: date("date").notNull(),
     createdAt: timestamp("created_at").defaultNow()
 }, (expenses) => {
     return {
