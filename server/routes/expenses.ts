@@ -7,9 +7,9 @@ import { authMiddleware } from "../middlewares";
 // Zod validators
 import { createExpenseValidator } from "../validation";
 
-// Drizzle ORM functions & Database 
-import { eq } from "drizzle-orm";
+// Database & Drizzle ORM functions  
 import { database } from "../database";
+import { desc, eq } from "drizzle-orm";
 
 // Importing schemas from the specified path with Table suffix
 import { expenses as expensesTable } from "../database/schema/expenses";
@@ -30,7 +30,9 @@ export const expensesRoute = new Hono()
             const expenses = await database
                 .select()
                 .from(expensesTable)
-                .where(eq(expensesTable.userId, id));
+                .where(eq(expensesTable.userId, id))
+                .orderBy(desc(expensesTable.createdAt))
+                .limit(10);
             return c.json({ success: true, data: { expenses } });
         } catch (error) {
             return c.json({
