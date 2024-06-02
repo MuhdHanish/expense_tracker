@@ -1,3 +1,4 @@
+import { catchHandler } from "../utils";
 import { createMiddleware } from "hono/factory";
 import { kindeClient, sessionManager } from "../kinde";
 import { type UserType } from "@kinde-oss/kinde-typescript-sdk";
@@ -20,10 +21,6 @@ export const authMiddleware = createMiddleware<Env>(async (c, next) => {
             await next();
         }
     } catch (error) {
-        return c.json({
-            success: false,
-            message: "Internal Server Error",
-            error: error instanceof Error ? error.message : "Unexpected Error"
-        }, 500);
+        catchHandler(c, error);
     }
 })
