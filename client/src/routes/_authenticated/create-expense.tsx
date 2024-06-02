@@ -1,9 +1,12 @@
 import { api } from "@/lib";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+
+// UI components
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "@tanstack/react-form";
 import { Button } from "@/components/ui/button";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Calendar } from "@/components/ui/calendar";
 
 // Zod create expense validation schema imported from the server
 import { createExpenseSchema } from "@server/validation";
@@ -20,8 +23,9 @@ function CreateExpense() {
     const form = useForm({
         validatorAdapter: zodValidator,
         defaultValues: {
-            title: '',
-            amount: "",
+            title: "",
+            amount: "0",
+            date: new Date().toISOString(),
         },
         onSubmit: async ({ value }) => {
             const response = await api.expenses.$post({ json: value });
@@ -33,7 +37,7 @@ function CreateExpense() {
     return (
         <div className="p-2">
             <h2>Create Expense</h2>
-            <form className="max-w-xl m-auto"
+            <form className="max-w-xl m-auto flex flex-col gap-y-4"
                 onSubmit={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
@@ -49,7 +53,7 @@ function CreateExpense() {
                     }}
                     children={(field) => {
                         return (
-                            <>
+                            <div>
                                 <Label htmlFor={field.name}>Title</Label>
                                 <Input
                                     id={field.name}
@@ -61,7 +65,7 @@ function CreateExpense() {
                                 {field.state.meta.touchedErrors ? (
                                     <em>{field.state.meta.touchedErrors}</em>
                                 ) : null}
-                            </>
+                            </div>
                         )
                     }}
                 />
@@ -73,7 +77,7 @@ function CreateExpense() {
                     }}
                     children={(field) => {
                         return (
-                            <>
+                            <div>
                                 <Label htmlFor={field.name}>Amount</Label>
                                 <Input
                                     id={field.name}
@@ -87,7 +91,29 @@ function CreateExpense() {
                                 {field.state.meta.touchedErrors ? (
                                     <em>{field.state.meta.touchedErrors}</em>
                                 ) : null}
-                            </>
+                            </div>
+                        )
+                    }}
+                />
+                <form.Field
+                    name="date"
+                    validatorAdapter={zodValidator}
+                    validators={{
+                        onChange: createExpenseSchema.shape.date,
+                    }}
+                    children={(field) => {
+                        return (
+                            <div className="self-center">
+                                <Calendar
+                                    mode="single"
+                                    selected={new Date(field.state.value)}
+                                    onSelect={(date) => field.handleChange((date ?? new Date()).toISOString())}
+                                    className="rounded-md border"
+                                />
+                                {field.state.meta.touchedErrors ? (
+                                    <em>{field.state.meta.touchedErrors}</em>
+                                ) : null}
+                            </div>
                         )
                     }}
                 />
