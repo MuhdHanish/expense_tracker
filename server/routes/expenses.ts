@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { CustomError, catchHandler, getUserId } from "../utils";
+import { getUserId } from "../utils";
 
 // Middlewares
 import { authMiddleware } from "../middlewares";
@@ -27,7 +27,11 @@ export const expensesRoute = new Hono()
                 .limit(10);
             return c.json({ success: true, data: { expenses } });
         } catch (error) {
-            catchHandler(c, error);
+            return c.json({
+                success: false,
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
+            }, 500);
         }
     })
     // Post expense
@@ -44,7 +48,11 @@ export const expensesRoute = new Hono()
                 .then(result => result[0]);
             return c.json({ success: true, data: { expense } }, 201);
         } catch (error) {
-            catchHandler(c, error);
+            return c.json({
+                success: false,
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
+            }, 500);
         }
     })
     // Get expense by id
@@ -57,10 +65,16 @@ export const expensesRoute = new Hono()
                 .from(expensesTable)
                 .where(and(eq(expensesTable.id, id), eq(expensesTable.userId, userId)))
                 .then(result => result[0]);
-            if (!expense) throw new CustomError(`Expense with id ${id} not found for the current user`, 404);
+            if (!expense) {
+                return c.json({ success: false, message: `Expense with id ${id} not found for the current user` }, 404);
+            }
             return c.json({ success: true, data: { expense } });
         } catch (error) {
-            catchHandler(c, error);
+            return c.json({
+                success: false,
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
+            }, 500);
         }
     })
     // Delete expense by id
@@ -73,10 +87,16 @@ export const expensesRoute = new Hono()
                 .where(and(eq(expensesTable.id, id), eq(expensesTable.userId, userId)))
                 .returning()
                 .then(result => result[0]);
-            if (!expense) throw new CustomError(`Expense with id ${id} not found for the current user`, 404);
+            if (!expense) {
+                return c.json({ success: false, message: `Expense with id ${id} not found for the current user` }, 404);
+            }
             return c.json({ success: true, data: { expense } });
         } catch (error) {
-            catchHandler(c, error);
+            return c.json({
+                success: false,
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
+            }, 500);
         }
     })
     // Get total spent
@@ -91,6 +111,10 @@ export const expensesRoute = new Hono()
                 .then(result => result[0]);
             return c.json({ success: true, data: { total } });
         } catch (error) {
-            catchHandler(c, error);
+            return c.json({
+                success: false,
+                message: "Internal Server Error",
+                error: error instanceof Error ? error.message : "Unexpected Error"
+            }, 500);
         }
     });
