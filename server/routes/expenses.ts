@@ -51,9 +51,9 @@ export const expensesRoute = new Hono()
             const userId = getUserId(c);
             const id = Number.parseInt(c.req.param("id"));
             const expense = await database
-                .delete(expensesTable)
+                .select()
+                .from(expensesTable)
                 .where(and(eq(expensesTable.id, id), eq(expensesTable.userId, userId)))
-                .returning()
                 .then(result => result[0]);
             if (!expense) throw new CustomError(`Expense with id ${id} not found for the current user`, 404);
             return c.json({ success: true, data: { expense } });
@@ -67,9 +67,9 @@ export const expensesRoute = new Hono()
             const userId = getUserId(c);
             const id = Number.parseInt(c.req.param("id"));
             const expense = await database
-                .select()
-                .from(expensesTable)
+                .delete(expensesTable)
                 .where(and(eq(expensesTable.id, id), eq(expensesTable.userId, userId)))
+                .returning()
                 .then(result => result[0]);
             if (!expense) throw new CustomError(`Expense with id ${id} not found for the current user`, 404);
             return c.json({ success: true, data: { expense } });
