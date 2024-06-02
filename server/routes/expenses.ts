@@ -1,20 +1,35 @@
 import { Hono } from "hono";
 import type { TExpense } from "../types";
+
+// Middlewares
 import { authMiddleware } from "../middlewares";
+
+// Zod validators
 import { createExpenseValidator } from "../validation";
+
+// Drizzle ORM functions & Database & Schemas
+import { eq } from "drizzle-orm";
+import { database } from "../database";
+import { expenses as expensesTable } from "../database/schema";
 
 // Fake data
 const fakeExpense: TExpense[] = [
-    { id: 1, title: "Groceries", amount: 150 },
-    { id: 2, title: "Rent", amount: 1200 },
-    { id: 3, title: "Utilities", amount: 200 },
+    { id: 1, title: "Groceries", amount: "150" },
+    { id: 2, title: "Rent", amount: "1200" },
+    { id: 3, title: "Utilities", amount: "200" },
 ];
 
 export const expensesRoute = new Hono()
     // Get expenses
-    .get("/", authMiddleware, (c) => {
+    .get("/", authMiddleware, async (c) => {
         try {
-            return c.json({ success: true, data: { expenses: fakeExpense } });
+            const { user } = c.var;
+            const { id } = user;
+            const expenses = await database
+                .select()
+                .from(expensesTable)
+                .where(eq(expensesTable.userId, id));
+            return c.json({ success: true, data: { expenses } });
         } catch (error) {
             return c.json({
                 success: false,
@@ -26,7 +41,7 @@ export const expensesRoute = new Hono()
     // Get total spent
     .get("/total-spent", authMiddleware, (c) => {
         try {
-            const total = fakeExpense.reduce((acc, expense) => acc + expense.amount, 0);
+            const total = fakeExpense.reduce((acc, expense) => acc + +expense.amount, 0);
             return c.json({ success: true, data: { total } });
         } catch (error) {
             return c.json({
@@ -37,11 +52,19 @@ export const expensesRoute = new Hono()
         }
     })
     // Post expense
-    .post("/", authMiddleware, createExpenseValidator, (c) => {
+    .post("/", authMiddleware, createExpenseValidator, async (c) => {
         try {
+            const { user } = c.var;
+            const { id: userId } = user;
             const expense = c.req.valid("json");
-            fakeExpense.push({ id: fakeExpense.length + 1, ...expense });
-            return c.json({ success: true, data: { expense } }, 201);
+            const storedExpense = await database
+                .insert(expensesTable)
+                .values({
+                    userId,
+                    ...expense,
+                })
+                .returning();
+            return c.json({ success: true, data: { expense: storedExpense } }, 201);
         } catch (error) {
             return c.json({
                 success: false,
