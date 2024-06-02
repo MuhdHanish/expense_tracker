@@ -7,10 +7,12 @@ import { authMiddleware } from "../middlewares";
 // Zod validators
 import { createExpenseValidator } from "../validation";
 
-// Drizzle ORM functions & Database & Schemas
+// Drizzle ORM functions & Database 
 import { eq } from "drizzle-orm";
 import { database } from "../database";
-import { expenses as expensesTable } from "../database/schema";
+
+// Importing schemas from the specified path with Table suffix
+import { expenses as expensesTable } from "../database/schema/expenses";
 
 // Fake data
 const fakeExpense: TExpense[] = [
