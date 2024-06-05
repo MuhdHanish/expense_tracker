@@ -66,7 +66,7 @@ function CreateExpense() {
                                     onChange={(e) => field.handleChange(e.target.value)}
                                 />
                                 {field.state.meta.touchedErrors ? (
-                                    <em className="text-xs text-destructive">{field.state.meta.touchedErrors}</em>
+                                    <em className="text-xs text-red-600">{field.state.meta.touchedErrors}</em>
                                 ) : null}
                             </div>
                         )
@@ -92,7 +92,7 @@ function CreateExpense() {
                                     onChange={(e) => field.handleChange(e.target.value)}
                                 />
                                 {field.state.meta.touchedErrors ? (
-                                    <em className="text-xs text-destructive">{field.state.meta.touchedErrors}</em>
+                                    <em className="text-xs text-red-600">{field.state.meta.touchedErrors}</em>
                                 ) : null}
                             </div>
                         )
