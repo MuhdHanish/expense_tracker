@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createFileRoute } from "@tanstack/react-router";
@@ -11,17 +12,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { DeleteButton } from "@/components/delete-button";
+import { PaginationComponent } from "@/components/pagination";
 
 import { getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/utils";
-import { DeleteButton } from "@/components/delete-button";
 
 export const Route = createFileRoute('/_authenticated/expenses')({
     component: Expenses,
 });
 
 function Expenses() {
-    const { data, error, isPending } = useQuery(getAllExpensesQueryOptions);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const { data, error, isPending } = useQuery(getAllExpensesQueryOptions(currentPage));
     const { data: loadingCreateExpense } = useQuery(loadingCreateExpenseQueryOptions);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     if (error) return error.message;
 
@@ -65,11 +73,17 @@ function Expenses() {
                                 <TableCell>{expense?.title}</TableCell>
                                 <TableCell>{expense?.amount}</TableCell>
                                 <TableCell>{expense?.date?.split("T")[0]}</TableCell>
-                                <TableCell><DeleteButton id={expense?.id}/></TableCell>
+                                <TableCell><DeleteButton id={expense?.id} /></TableCell>
                             </TableRow>
                         ))}
                 </TableBody>
             </Table>
+            {data?.pagination && data?.pagination.totalPages > 1 &&
+                <PaginationComponent
+                    currentPage={currentPage}
+                    handlePageChange={handlePageChange}
+                    pagination={data?.pagination}
+                />}
         </div>
     );
 };
