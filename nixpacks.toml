@@ -2,4 +2,8 @@
     nixpkgsArchive = '0d1ef1a839ce0f3282bf24bea2788b9ad659be83'
 
 [start]
-cmd = "bun run migrate && bun run start"
+cmd = """
+cd ./client && bun run build
+cd ..
+bun run migrate && bun run start
+"""
