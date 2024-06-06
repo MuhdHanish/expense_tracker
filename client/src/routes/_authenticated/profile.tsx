@@ -1,5 +1,5 @@
-import { getProfileQueryOptions } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
+import { getProfileQueryOptions } from "@/utils";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
