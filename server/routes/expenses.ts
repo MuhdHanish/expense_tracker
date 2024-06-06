@@ -23,8 +23,7 @@ export const expensesRoute = new Hono()
                 .select()
                 .from(expensesTable)
                 .where(eq(expensesTable.userId, userId))
-                .orderBy(desc(expensesTable.createdAt))
-                .limit(10);
+                .orderBy(desc(expensesTable.createdAt));
             return c.json({ success: true, data: { expenses } });
         } catch (error) {
             return c.json({
