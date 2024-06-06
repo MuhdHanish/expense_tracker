@@ -1,5 +1,6 @@
+import { TRouterContext } from "@/types";
 import { NavBar } from "@/components/navbar";
-import { TRouterContext } from "../../types/index";
+import { Toaster } from "@/components/ui/sonner";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 
 export const Route = createRootRouteWithContext<TRouterContext>()({
@@ -14,6 +15,7 @@ function Root() {
             <div className="p-2 max-w-2xl m-auto">
                 <Outlet />
             </div>
+            <Toaster position="bottom-right" richColors />
         </>
     );
 };
