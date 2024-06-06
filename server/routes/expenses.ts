@@ -9,7 +9,7 @@ import { createExpenseValidator } from "../validation";
 
 // Database & Drizzle ORM functions  
 import { database } from "../database";
-import { and, desc, eq, sum } from "drizzle-orm";
+import { and, count, desc, eq, sum } from "drizzle-orm";
 
 // Importing schemas from the specified path with Table suffix  & Drizzle-Zod schema
 import { expenses as expensesTable, insertExpensesSchema } from "../database/schema/expenses";
@@ -19,12 +19,34 @@ export const expensesRoute = new Hono()
     .get("/", authMiddleware, async (c) => {
         try {
             const userId = getUserId(c);
-            const expenses = await database
-                .select()
-                .from(expensesTable)
-                .where(eq(expensesTable.userId, userId))
-                .orderBy(desc(expensesTable.createdAt));
-            return c.json({ success: true, data: { expenses } });
+            const { page } = c.req.query();
+            const resPerPage = 10;
+            const currentPage = Number(page) || 1;
+            const skip = resPerPage * (currentPage - 1);
+            const [totalExpensesCount, expenses] = await Promise.all([
+                database
+                    .select({ count: count() })
+                    .from(expensesTable)
+                    .where(eq(expensesTable.userId, userId))
+                    .then(result => result[0]),
+                database
+                    .select()
+                    .from(expensesTable)
+                    .where(eq(expensesTable.userId, userId))
+                    .orderBy(desc(expensesTable.createdAt))
+                    .limit(resPerPage)
+                    .offset(skip)
+            ]);
+            const total = totalExpensesCount ? totalExpensesCount.count : 0;
+            const prev = currentPage > 1 ? currentPage - 1 : null;
+            const next = currentPage * resPerPage < total ? currentPage + 1 : null;
+            const pagination = {
+                prev,
+                next,
+                currentPage,
+                totalPages: Math.ceil(total / resPerPage)
+            };
+            return c.json({ success: true, data: { expenses, pagination } });
         } catch (error) {
             return c.json({
                 success: false,
