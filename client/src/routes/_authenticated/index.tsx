@@ -1,4 +1,5 @@
 import { api } from "@/lib";
+import { Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,7 +25,7 @@ function Index() {
                 <CardTitle>Total Spent</CardTitle>
                 <CardDescription>The total amount you've spent</CardDescription>
             </CardHeader>
-            <CardContent>{isPending ? "..." : data?.total}</CardContent>
+            <CardContent>{isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : data?.total || "0.00"}</CardContent>
         </Card>
     );
 };
