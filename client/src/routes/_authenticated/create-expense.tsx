@@ -34,16 +34,17 @@ function CreateExpense() {
             date: new Date().toISOString(),
         },
         onSubmit: async ({ value }) => {
-            const { expenses: existingExpenses } = await queryClient.ensureQueryData(
-                getAllExpensesQueryOptions
+            const { expenses: existingExpenses, pagination } = await queryClient.ensureQueryData(
+                getAllExpensesQueryOptions()
             );
             naviagte({ to: "/expenses" });
             queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, { expense: value });
             try {
                 const { expense } = await createExpense({ value });
-                queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, {
+                queryClient.setQueryData(getAllExpensesQueryOptions().queryKey, {
                     ...existingExpenses,
                     expenses: [expense, ...existingExpenses],
+                    pagination
                 });
                 const description = formattedDateDescription();
                 toast.message(`Expense has been created successfully: ${expense?.id}`, { description });

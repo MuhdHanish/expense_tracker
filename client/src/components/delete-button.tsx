@@ -21,9 +21,10 @@ export function DeleteButton({ id }: TDeleteButtonProps) {
         onSuccess: () => {
             const description = formattedDateDescription();
             toast.message(`Expense has been delete successfully: ${id}`, { description });
-            queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, (existingExpenses) => ({
+            queryClient.setQueryData(getAllExpensesQueryOptions().queryKey, (existingExpenses) => ({
                 ...existingExpenses,
-                expenses: existingExpenses!.expenses.filter((expense)=> expense?.id !== id),
+                expenses: existingExpenses!.expenses.filter((expense) => expense?.id !== id),
+                pagination: existingExpenses!.pagination
             }));
         },
     })
