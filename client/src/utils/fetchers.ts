@@ -24,8 +24,8 @@ export const getProfileQueryOptions = queryOptions({
 });
 
 // Getting all expenses
-async function getAllExpenses() {
-    const response = await api.expenses.$get();
+async function getAllExpenses(page: number = 1) {
+    const response = await api.expenses.$get({ query: { page } });
     if (!response.ok)
         throw new Error(
             "The server may be experiencing issues, Please try again later."
@@ -35,9 +35,9 @@ async function getAllExpenses() {
 }
 
 // Export the get all expenses query options to use globally
-export const getAllExpensesQueryOptions = queryOptions({
-    queryKey: ["get-all-expenses"],
-    queryFn: getAllExpenses,
+export const getAllExpensesQueryOptions = (page: number = 1) => queryOptions({
+    queryKey: ["get-all-expenses", page],
+    queryFn: () => getAllExpenses(page),
     staleTime: 1000 * 60 * 5,
 });
 
