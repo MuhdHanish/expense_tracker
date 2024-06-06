@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { getProfileQueryOptions } from '@/lib';
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Button } from "@/components/ui/button";
+import { getProfileQueryOptions } from "@/utils";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 // src/routes/_authenticated.tsx
 export const Route = createFileRoute('/_authenticated')({
