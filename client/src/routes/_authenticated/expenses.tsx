@@ -1,4 +1,3 @@
-import { api } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createFileRoute } from "@tanstack/react-router";
@@ -13,22 +12,19 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
+import { getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/utils";
+import { DeleteButton } from "@/components/delete-button";
+
 export const Route = createFileRoute('/_authenticated/expenses')({
     component: Expenses,
 });
 
-
-async function getAllExpenses() {
-    const response = await api.expenses.$get();
-    if (!response.ok) throw new Error("The server may be experiencing issues, Please try again later.");
-    const { data } = await response.json();
-    return data;
-};
-
 function Expenses() {
-    const { data, error, isPending } = useQuery({ queryKey: ["get-all-expenses"], queryFn: getAllExpenses });
+    const { data, error, isPending } = useQuery(getAllExpensesQueryOptions);
+    const { data: loadingCreateExpense } = useQuery(loadingCreateExpenseQueryOptions);
+
     if (error) return error.message;
-    
+
     return (
         <div className="p-2 max-w-3xl m-auto">
             <Table>
@@ -39,27 +35,39 @@ function Expenses() {
                         <TableHead>Title</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead>Date</TableHead>
+                        <TableHead>Delete</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
+                    {loadingCreateExpense?.expense &&
+                        <TableRow>
+                            <TableCell className="w-[100px]"><Skeleton className="h-4" /></TableCell>
+                            <TableCell>{loadingCreateExpense?.expense?.title}</TableCell>
+                            <TableCell>{loadingCreateExpense?.expense?.amount}</TableCell>
+                            <TableCell>{loadingCreateExpense?.expense?.date?.split("T")[0]}</TableCell>
+                            <TableCell><Skeleton className="h-4" /></TableCell>
+                        </TableRow>
+                    }
                     {isPending ? Array(3)
                         .fill(0)
                         .map((_, index) => (
                             <TableRow key={index}>
-                                <TableCell><Skeleton className="h-4"/></TableCell>
-                                <TableCell><Skeleton className="h-4"/></TableCell>
-                                <TableCell><Skeleton className="h-4"/></TableCell>
-                                <TableCell><Skeleton className="h-4"/></TableCell>
+                                <TableCell><Skeleton className="h-4" /></TableCell>
+                                <TableCell><Skeleton className="h-4" /></TableCell>
+                                <TableCell><Skeleton className="h-4" /></TableCell>
+                                <TableCell><Skeleton className="h-4" /></TableCell>
+                                <TableCell><Skeleton className="h-4" /></TableCell>
                             </TableRow>
                         ))
                         : data?.expenses?.map((expense) => (
-                        <TableRow key={expense?.id}>
-                            <TableCell className="font-medium">{expense?.id}</TableCell>
-                            <TableCell>{expense?.title}</TableCell>
-                            <TableCell>{expense?.amount}</TableCell>
-                            <TableCell>{expense?.date}</TableCell>
-                        </TableRow>
-                    ))}
+                            <TableRow key={expense?.id}>
+                                <TableCell className="font-medium">{expense?.id}</TableCell>
+                                <TableCell>{expense?.title}</TableCell>
+                                <TableCell>{expense?.amount}</TableCell>
+                                <TableCell>{expense?.date?.split("T")[0]}</TableCell>
+                                <TableCell><DeleteButton id={expense?.id}/></TableCell>
+                            </TableRow>
+                        ))}
                 </TableBody>
             </Table>
         </div>
