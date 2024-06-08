@@ -1,6 +1,7 @@
+import { format, parseISO } from "date-fns";
 import { useQueryClient } from "@tanstack/react-query";
-import { createExpense, formattedDateDescription, getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/utils";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createExpense, formattedDateDescription, getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/utils";
 
 // Loader icon
 import { Loader2 } from "lucide-react";
@@ -31,7 +32,7 @@ function CreateExpense() {
         defaultValues: {
             title: "",
             amount: "0",
-            date: new Date().toISOString(),
+            date: format(new Date(), 'yyyy-MM-dd'),
         },
         onSubmit: async ({ value }) => {
             const { expenses: existingExpenses, pagination } = await queryClient.ensureQueryData(
@@ -135,9 +136,9 @@ function CreateExpense() {
                             <div className="self-center">
                                 <Calendar
                                     mode="single"
-                                    selected={new Date(field.state.value)}
+                                    selected={parseISO(field.state.value)}
                                     onSelect={(date) =>
-                                        field.handleChange((date ?? new Date()).toISOString())
+                                        field.handleChange(format(date ?? new Date(), 'yyyy-MM-dd'))
                                     }
                                     className="rounded-md border"
                                 />
