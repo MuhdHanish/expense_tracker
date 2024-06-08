@@ -5,11 +5,16 @@
   "scripts": {
     "db-studio": "bunx drizzle-kit studio",
     "migrate": "bun drizzle-kit generate && bun migrate.ts",
-    "start": "bun server/index.ts",
-    "dev": "bun --watch server/index.ts"
+    "start:server": "bun server/index.ts",
+    "dev:server": "bun --watch server/index.ts",
+    "dev:client": "cd client && bun run dev",
+    "build:client": "cd client && bun run build",
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+    "start": "concurrently \"bun run start:server\" \"bun run build:client && cd client && serve -s build\""
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "concurrently": "^8.2.2",
     "drizzle-kit": "^0.22.1"
   },
   "peerDependencies": {
