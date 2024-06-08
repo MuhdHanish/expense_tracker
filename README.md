@@ -17,8 +17,9 @@ A simple expense tracking application with a robust tech stack, designed to prov
   - [Frontend Routes](#frontend-routes)
   - [Backend Routes](#backend-routes)
 - [Environment Variables](#environment-variables)
+- [Feedback](#feedback)
 - [Contributing](#contributing)
-- [License](#license)
+- [Support](#support)
 
 ## Overview
 
@@ -91,21 +92,23 @@ This project is divided into two main parts:
    ```
    Fill in the required environment variables in the `.env` file.
 
-### Running the Application
+## Running the Application
 
-#### Development Mode
+### Script Commands
 
-To run both the frontend and backend concurrently in development mode:
-```sh
-bun run dev
-```
+- **db-studio**: This command opens the database studio for managing the database. It uses `bunx drizzle-kit studio` to launch the database studio provided by Drizzle.
 
-#### Production Mode
+- **migrate**: This command generates migrations using `bun drizzle-kit generate` and then applies those migrations to the database using `bun migrate.ts`. It's used for managing database schema changes and data migrations.
 
-To build and start both the frontend and backend:
-```sh
-bun run start
-```
+- **start:server**: This command starts the backend server. It runs the entry file `server/index.ts` using `bun`.
+
+- **dev:server**: This command starts the backend server in development mode with watch mode enabled. It monitors changes to files in the `server` directory and restarts the server automatically when changes are detected.
+
+- **dev:client**: This command starts the frontend development server. It changes directory to the `client` directory and then runs `bun run dev` to start the frontend server.
+
+- **build:client**: This command builds the frontend for production. It changes directory to the `client` directory and then runs `bun run build` to generate production-ready assets.
+
+- **dev**: This command runs both the backend and frontend servers concurrently in development mode. It uses `concurrently` to execute multiple commands simultaneously. Specifically, it starts the backend server in development mode and then builds and starts the frontend server.
 
 ## Routes
 
@@ -139,6 +142,14 @@ All backend routes are prefixed with `/api`.
 
 Ensure all necessary variables are provided for the application to run correctly. The required variables can be found and set in the `.env.example` file. Copy this file to `.env` and fill in the appropriate values.
 
+## Feedback
+
+If you have any feedback, please reach me at [muhammedhanish11@gmail.com](mailto:muhammedhanish11@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/muhdhanish/).
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes. Make sure to follow the project's coding standards and include relevant tests.
+
+## Support
+
+Show your support by 🌟 the project!!
