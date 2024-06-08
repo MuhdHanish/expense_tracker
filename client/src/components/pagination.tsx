@@ -17,42 +17,93 @@ type TPaginationProps = {
 };
 
 export function PaginationComponent({ currentPage, handlePageChange, pagination }:TPaginationProps) {
+    const { totalPages, prev, next } = pagination;
+
+    const getPageNumbers = () => {
+        const maxPagesToShow = 5;
+        const pages = [];
+
+        if (totalPages <= maxPagesToShow) {
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push(i);
+            }
+        } else {
+            let start = Math.max(currentPage - Math.floor(maxPagesToShow / 2), 1);
+            let end = Math.min(start + maxPagesToShow - 1, totalPages);
+
+            if (end - start < maxPagesToShow - 1) {
+                start = Math.max(end - maxPagesToShow + 1, 1);
+            }
+
+            for (let i = start; i <= end; i++) {
+                pages.push(i);
+            }
+        }
+
+        return pages;
+    };
+
+    const pageNumbers = getPageNumbers();
+
     return (
         <Pagination className="mt-4">
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
-                        aria-disabled={!pagination?.prev}
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        tabIndex={!pagination?.prev ? -1 : undefined}
-                        className={!pagination?.prev ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        aria-disabled={!prev}
+                        onClick={() => prev && handlePageChange(currentPage - 1)}
+                        tabIndex={!prev ? -1 : undefined}
+                        className={!prev ? "pointer-events-none opacity-50" : "cursor-pointer"}
                     />
                 </PaginationItem>
-                {Array.from({ length: pagination?.totalPages > 3 ? 3 : pagination?.totalPages }, (_, index) => (
-                    <PaginationItem key={index}>
+                {pageNumbers[0] > 1 && (
+                    <>
+                        <PaginationItem>
+                            <PaginationLink
+                                className="cursor-pointer"
+                                onClick={() => handlePageChange(1)}
+                            >
+                                1
+                            </PaginationLink>
+                        </PaginationItem>
+                        {pageNumbers[0] > 2 && <PaginationEllipsis />}
+                    </>
+                )}
+                {pageNumbers.map((page) => (
+                    <PaginationItem key={page}>
                         <PaginationLink
-                            isActive={index + 1 === currentPage}
-                            className={index + 1 === currentPage ? "" : "cursor-pointer"}
-                            onClick={() => handlePageChange(index + 1)}
+                            isActive={page === currentPage}
+                            className={page === currentPage ? "" : "cursor-pointer"}
+                            onClick={() => handlePageChange(page)}
                         >
-                            {index + 1}
+                            {page}
                         </PaginationLink>
                     </PaginationItem>
                 ))}
-                {pagination?.totalPages > 3 &&
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                }
+                {pageNumbers[pageNumbers.length - 1] < totalPages && (
+                    <>
+                        {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
+                            <PaginationEllipsis />
+                        )}
+                        <PaginationItem>
+                            <PaginationLink
+                                className="cursor-pointer"
+                                onClick={() => handlePageChange(totalPages)}
+                            >
+                                {totalPages}
+                            </PaginationLink>
+                        </PaginationItem>
+                    </>
+                )}
                 <PaginationItem>
                     <PaginationNext
-                        aria-disabled={!pagination?.next}
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        tabIndex={!pagination?.next ? -1 : undefined}
-                        className={!pagination?.next ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        aria-disabled={!next}
+                        onClick={() => next && handlePageChange(currentPage + 1)}
+                        tabIndex={!next ? -1 : undefined}
+                        className={!next ? "pointer-events-none opacity-50" : "cursor-pointer"}
                     />
                 </PaginationItem>
             </PaginationContent>
         </Pagination>
-    )
+    );
 };
