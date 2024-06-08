@@ -9,7 +9,7 @@
     "dev:server": "bun --watch server/index.ts",
     "dev:client": "cd client && bun run dev",
     "build:client": "cd client && bun run build",
-    "dev": "concurrently \"bun run dev:server\" \"bun run build:client\" \"bun run dev:client\""
+    "dev": "concurrently \"bun run dev:server\" \"bun run build:client && bun run dev:client\""
   },
   "devDependencies": {
     "@types/bun": "latest",
