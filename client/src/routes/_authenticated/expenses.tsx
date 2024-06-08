@@ -72,7 +72,7 @@ function Expenses() {
                                 <TableCell className="font-medium">{expense?.id}</TableCell>
                                 <TableCell>{expense?.title}</TableCell>
                                 <TableCell>{expense?.amount}</TableCell>
-                                <TableCell>{expense?.date?.split("T")[0]}</TableCell>
+                                <TableCell>{expense?.date?.split("T")[0] || expense?.date}</TableCell>
                                 <TableCell><DeleteButton id={expense?.id} /></TableCell>
                             </TableRow>
                         ))}
